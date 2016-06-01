@@ -246,12 +246,13 @@ var CustomReporters = (function(ext) {
 			ext[getReturnFunc(reporter.funcName)] = function(val) { reporter.ret(val); };
 
 			for(var i = 0; i < reporter.params.length; ++i) { //Add parameter blocks
+				var param = reporters.params[i];
 				addBlock([
-					reporter.params[i].type, //block type
-					reporter.params[i].name + ' of ' + reporter.hatName, //block name
-					getParamFunc(funcName,reporters.params[i].name) //block func name
+					param.type, //block type
+					param.name + ' of ' + reporter.hatName, //block name
+					getParamFunc(funcName,param.name) //block func name
 				]);
-				ext[getParamFunc(funcName,reporters.params[i].name)] = function() { return reporters.params[i].read(); };
+				ext[getParamFunc(funcName,param.name)] = function() { return param.read(); };
 			}
 			
 			refresh();
