@@ -243,7 +243,7 @@ var reporters = {};
 	//If a reporter with the same name does not yet exist, add the new reporter
     var addReporter = function(reporter)
     {
-		if(!reporters[reporter.funcName])) { //Only add reporter if it doesn't yet exist
+		if(!reporters[reporter.funcName]) { //Only add reporter if it doesn't yet exist
 			reporters[reporter.funcName] = reporter;
 
 			addBlock(['h','define ' + reporter.hatName,getHatFunc(reporter.funcName)]);
