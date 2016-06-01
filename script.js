@@ -264,7 +264,7 @@ var CustomReporters = (function(ext) {
 	//Tries to parse the reporter and add it.
 	var parseReporter = function(data) {
 		var reporter = getNewReporter();
-		apply(reporter,getFrags(data));
+		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
 		addReporter(reporter);
 	}
 	
