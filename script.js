@@ -99,9 +99,11 @@ var CustomReporters = (function(ext) {
 		};
 	};
 	
-	//Creates and returns a new parameter object.
-	var getNewParam = function() {
+	//Creates and returns a new parameter object with the specified name and type.
+	var getNewParam = function(name,type) {
 		return {
+			type: type,
+			name: name,
             value: '',
             read: function()
             {
@@ -193,20 +195,6 @@ var CustomReporters = (function(ext) {
         return escapedName;
 	};
 	
-	var createParam = function(hatName, funcName, paramName, paramType) {
-        var param = getNewParam();
-
-		addBlock([
-			paramType, //block type
-			paramName + ' of ' + hatName, //block name
-			getParamFunc(funcName,paramName) //block func name
-		])
-		//Setup function for parameter access
-        ext[getParamFunc(funcName,paramName)] = function() { return param.read(); };
-
-        return param;
-    }
-	
 	//Applies the given frags to the given reporter.
 	var apply = function(frags,reporter) {
 		reporter.hatName = ''; //Reset name values
@@ -238,7 +226,7 @@ var CustomReporters = (function(ext) {
 		for(var i = 0; i < frags.length; ++i) { //Generate parameters from frags
 			if(frags[i].type != fragtypes.label) {
 				//add new parameter and increment count
-				reporter.params[reporter.paramCount++] = createParam(reporter.hatName,reporter.funcName,frags[i].data,getParamType(frags[i].type));
+				reporter.params[reporter.paramCount++] = getNewParam(frags[i].data,getParamType(frags[i].type));
 			}
 		}
 	};
@@ -257,6 +245,15 @@ var CustomReporters = (function(ext) {
 			ext[getCallFunc(reporter.funcName)] = function() { reporter.call(arguments); };
 			ext[getReturnFunc(reporter.funcName)] = function(val) { reporter.ret(val); };
 
+			for(var i = 0; i < reporter.params.length; ++i) { //Add parameter blocks
+				addBlock([
+					reporter.params[i].type, //block type
+					reporter.params[i].name + ' of ' + reporter.hatName, //block name
+					getParamFunc(funcName,reporters.parameters[i].name) //block func name
+				]);
+				ext[getParamFunc(funcName,reporters.parameters[i].name)] = function() { return reporters.parameters[i].read(); };
+			}
+			
 			refresh();
 		}
     };
