@@ -267,14 +267,15 @@ var CustomReporters = (function(ext) {
 		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
 		addReporter(reporter);
 	}
-	
+	ext.parseReporter = parseReporter; //Allow ext to access this so that it can call parseReporter() from the reload block
+
 	// Block and block menu descriptions
     var descriptor = {
         blocks: [
             [' ', 'reload reporter %s', 'parseReporter'] //Add the parse reporter block for reloading reporters on green flag
         ]
     };
-
+	
 	//Initialize extension
     refresh();
 	
