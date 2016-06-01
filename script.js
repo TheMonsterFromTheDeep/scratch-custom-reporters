@@ -1,7 +1,7 @@
 var extensionName = 'Custom Reporters';
 
 var reporters = {};
-(function(ext) {
+var CustomReporters = (function(ext) {
 
     // Cleanup function when the extension is unloaded
     ext._shutdown = function() {};
@@ -274,4 +274,14 @@ var reporters = {};
 
 	//Initialize extension
     refresh();
+	
+	return { //Return some useful things
+		refresh: refresh,
+		getNewFrag: getNewFrag,
+		getNewReporter: getNewReporter,
+		getFrags: getFrags,
+		apply: apply,
+		addReporter: addReporter,
+		parseReporter: parseReporter
+	};
 })({});
