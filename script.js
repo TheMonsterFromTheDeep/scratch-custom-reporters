@@ -138,6 +138,7 @@ var CustomReporters = (function(ext) {
 			if(!check()) {
 				if(data.charAt(i) == '[') {
 					add(fragtypes.label);
+					i++;
 					while(i < data.length && data.charAt(i) != ']') {
 						if(!check()) {
 							current += data.charAt(i++);
@@ -147,6 +148,7 @@ var CustomReporters = (function(ext) {
 				}
 				else if(data.charAt(i) == '<') {
 					add(fragtypes.label);
+					i++;
 					while(i < data.length && data.charAt(i) != '>') {
 						if(!check()) {
 							current += data.charAt(i++);
@@ -156,6 +158,7 @@ var CustomReporters = (function(ext) {
 				}
 				else if(data.charAt(i) == '(') {
 					add(fragtypes.label);
+					i++;
 					while(i < data.length && data.charAt(i) != ')') {
 						if(!check()) {
 							current += data.charAt(i++);
