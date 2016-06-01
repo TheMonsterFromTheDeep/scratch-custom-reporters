@@ -37,7 +37,7 @@ var CustomReporters = (function(ext) {
 	
 	//Gets the parameter type that corresponds to the specified frag type.
 	var getParamType = function(fragType) {
-		return fragType == fragtypes.inputBool ? argtypes.bool : argtypes.reporter;
+		return fragType == fragtypes.inputBool ? paramtypes.bool : paramtypes.reporter;
 	};
 
     var refresh = function() {
