@@ -238,7 +238,7 @@ var CustomReporters = (function(ext) {
 		for(var i = 0; i < frags.length; ++i) { //Generate parameters from frags
 			if(frags[i].type != fragtypes.label) {
 				//add new parameter and increment count
-				reporter.params[paramCount++] = createParam(reporter.hatName,repoter.funcName,frags[i].data,getParamType(frags[i].type));
+				reporter.params[reporter.paramCount++] = createParam(reporter.hatName,repoter.funcName,frags[i].data,getParamType(frags[i].type));
 			}
 		}
 	};
