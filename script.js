@@ -249,9 +249,9 @@ var CustomReporters = (function(ext) {
 				addBlock([
 					reporter.params[i].type, //block type
 					reporter.params[i].name + ' of ' + reporter.hatName, //block name
-					getParamFunc(funcName,reporters.parameters[i].name) //block func name
+					getParamFunc(funcName,reporters.params[i].name) //block func name
 				]);
-				ext[getParamFunc(funcName,reporters.parameters[i].name)] = function() { return reporters.parameters[i].read(); };
+				ext[getParamFunc(funcName,reporters.params[i].name)] = function() { return reporters.params[i].read(); };
 			}
 			
 			refresh();
