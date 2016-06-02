@@ -126,7 +126,6 @@ var CustomReporters = (function(ext) {
 				++i;
 				if(i < data.length) {
 					current += data.charAt(i);
-					++i;
 				}
 				return true;
 			}
