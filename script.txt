@@ -122,14 +122,12 @@ var CustomReporters = (function(ext) {
 		var current = '';
 		var i = 0;
 		var check = function() {
-		console.log("i: " + i + "; data.charAt(i): " + data.charAt(i));
 			if(data.charAt(i) == '_') {
 				++i;
 				if(i < data.length) {
 					current += data.charAt(i);
 					++i;
 				}
-				console.log("Found bracket: finish i: " + i);
 				return true;
 			}
 			return false;
@@ -140,7 +138,6 @@ var CustomReporters = (function(ext) {
 		};
 		for(;i < data.length; ++i) {
 			if(!check()) {
-			console.log("Check failed: i: " + i);
 				if(data.charAt(i) == '[') {
 					add(fragtypes.label);
 					i++;
