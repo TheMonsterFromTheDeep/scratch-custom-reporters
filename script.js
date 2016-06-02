@@ -116,17 +116,16 @@ var CustomReporters = (function(ext) {
         };
 	};
 	
-	//Parses a block's frags from a block specifier string. (Escape character: \)
+	//Parses a block's frags from a block specifier string. (Escape character: _)
 	var getFrags = function(data) {
 		var frags = [];
 		var current = '';
 		var i = 0;
 		var check = function() {
-			if(data.charAt(i) == '\\') {
+			if(data.charAt(i) == '_') {
 				++i;
 				if(i < data.length) {
 					current += data.charAt(i);
-					++i;
 				}
 				return true;
 			}
@@ -246,7 +245,7 @@ var CustomReporters = (function(ext) {
 			ext[getReturnFunc(reporter.funcName)] = function(val) { reporter.ret(val); };
 
 			for(var i = 0; i < reporter.params.length; ++i) { //Add parameter blocks
-				var param = reporters.params[i];
+				var param = reporter.params[i];
 				addBlock([
 					param.type, //block type
 					param.name + ' of ' + reporter.hatName, //block name
@@ -264,26 +263,45 @@ var CustomReporters = (function(ext) {
 		var reporter = getNewReporter();
 		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
 		addReporter(reporter);
-	}
-	ext.parseReporter = parseReporter; //Allow ext to access this so that it can call parseReporter() from the reload block
+	};
+	
+	//Tries to parse the reporter and add it - also allows for selecting type
+	var parseReporterType = function(type, data) {
+		var reporter = getNewReporter();
+		reporter.type = type;
+		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
+		addReporter(reporter);
+	};
+	
+	//Specialized method passes down to parseReporterType
+	ext.loadReporter = function(type, data) {
+		parseReporterType(type == 'reporter' ? functypes.reporter : functypes.bool, data);
+	};
 
 	// Block and block menu descriptions
     var descriptor = {
         blocks: [
-            [' ', 'reload reporter %s', 'parseReporter'] //Add the parse reporter block for reloading reporters on green flag
-        ]
+            [' ', 'reload %m.customBlockType %s', 'loadReporter'] //Add the load reporter block for reloading reporters/booleans on green flag
+        ],
+		menus: {
+			customBlockType: ['reporter','boolean']
+		}
     };
 	
 	//Initialize extension
     refresh();
 	
 	return { //Return some useful things
+		paramtypes: paramtypes,
+		functypes: functypes,
+		fragtypes: fragtypes,
 		refresh: refresh,
 		getNewFrag: getNewFrag,
 		getNewReporter: getNewReporter,
 		getFrags: getFrags,
 		apply: apply,
 		addReporter: addReporter,
-		parseReporter: parseReporter
+		parseReporter: parseReporter,
+		parseReporterType: parseReporterType
 	};
 })({});
