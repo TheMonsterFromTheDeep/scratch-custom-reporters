@@ -244,14 +244,17 @@ var CustomReporters = (function(ext) {
 			ext[getCallFunc(reporter.funcName)] = function() { reporter.call(arguments); };
 			ext[getReturnFunc(reporter.funcName)] = function(val) { reporter.ret(val); };
 
-			for(var i = 0; i < reporter.params.length; ++i) { //Add parameter blocks
-				var param = reporter.params[i];
+			var addParameter = function(param) {
 				addBlock([
 					param.type, //block type
 					param.name + ' of ' + reporter.hatName, //block name
 					getParamFunc(reporter.funcName,param.name) //block func name
 				]);
 				ext[getParamFunc(reporter.funcName,param.name)] = function() { return param.read(); };
+			};
+			
+			for(var i = 0; i < reporter.params.length; ++i) { //Add parameter blocks
+				addParameter(reporter.params[i]);
 			}
 			
 			refresh();
