@@ -277,6 +277,9 @@ var CustomReporters = (function(ext) {
     refresh();
 	
 	return { //Return some useful things
+		paramtypes: paramtypes,
+		functypes: functypes,
+		fragtypes: fragtypes,
 		refresh: refresh,
 		getNewFrag: getNewFrag,
 		getNewReporter: getNewReporter,
