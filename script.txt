@@ -263,26 +263,45 @@ var CustomReporters = (function(ext) {
 		var reporter = getNewReporter();
 		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
 		addReporter(reporter);
-	}
-	ext.parseReporter = parseReporter; //Allow ext to access this so that it can call parseReporter() from the reload block
+	};
+	
+	//Tries to parse the reporter and add it - also allows for selecting type
+	var parseReporterType = function(type, data) {
+		var reporter = getNewReporter();
+		reporter.type = type;
+		apply(getFrags(data),reporter); //Apply frags *to* reporter (not the other way around)
+		addReporter(reporter);
+	};
+	
+	//Specialized method passes down to parseReporterType
+	ext.loadReporter = function(type, data) {
+		parseReporterType(type == 'reporter' ? functypes.reporter : functypes.bool, data);
+	};
 
 	// Block and block menu descriptions
     var descriptor = {
         blocks: [
-            [' ', 'reload reporter %s', 'parseReporter'] //Add the parse reporter block for reloading reporters on green flag
-        ]
+            [' ', 'reload %m.customBlockType %s', 'loadReporter'] //Add the load reporter block for reloading reporters/booleans on green flag
+        ],
+		menus: {
+			customBlockType: ['reporter','boolean']
+		}
     };
 	
 	//Initialize extension
     refresh();
 	
 	return { //Return some useful things
+		paramtypes: paramtypes,
+		functypes: functypes,
+		fragtypes: fragtypes,
 		refresh: refresh,
 		getNewFrag: getNewFrag,
 		getNewReporter: getNewReporter,
 		getFrags: getFrags,
 		apply: apply,
 		addReporter: addReporter,
-		parseReporter: parseReporter
+		parseReporter: parseReporter,
+		parseReporterType: parseReporterType
 	};
 })({});
